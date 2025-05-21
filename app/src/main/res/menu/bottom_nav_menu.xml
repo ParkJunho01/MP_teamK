@@ -1,7 +1,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/nav_home" android:icon="@android:drawable/ic_menu_mapmode" android:title="홈" />
-    <item android:id="@+id/nav_tag" android:icon="@android:drawable/ic_menu_search" android:title="태그책" />
-    <item android:id="@+id/nav_bookmark" android:icon="@android:drawable/ic_menu_save" android:title="즐찾" />
-    <item android:id="@+id/nav_search" android:icon="@android:drawable/ic_menu_search" android:title="검색" />
-    <item android:id="@+id/nav_setting" android:icon="@android:drawable/ic_menu_preferences" android:title="설정" />
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="홈" />
+
+    <item
+        android:id="@+id/nav_search"
+        android:icon="@drawable/ic_search"
+        android:title="검색" />
+
+    <item
+        android:id="@+id/nav_bookmark"
+        android:icon="@drawable/ic_bookmark"
+        android:title="즐찾" />
+
+    <item
+        android:id="@+id/nav_setting"
+        android:icon="@drawable/ic_settings"
+        android:title="설정" />
 </menu>

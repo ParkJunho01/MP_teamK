@@ -1,6 +1,44 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/home_map_container"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-</FrameLayout>
+    android:layout_height="match_parent"
+    android:padding="12dp">
+
+    <!-- Material 검색창 -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/home_search_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:boxCornerRadiusTopStart="16dp"
+        app:boxCornerRadiusTopEnd="16dp"
+        app:boxCornerRadiusBottomStart="16dp"
+        app:boxCornerRadiusBottomEnd="16dp"
+        app:boxBackgroundColor="#FFFFFF"
+        app:boxStrokeColor="#CCCCCC">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/home_search_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="장소를 검색하세요"
+            android:inputType="text"
+            android:imeOptions="actionSearch" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- 최근 검색어 리스트 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/home_recent_search_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginTop="8dp" />
+
+    <!-- 지도 -->
+    <FrameLayout
+        android:id="@+id/home_map_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+</LinearLayout>
