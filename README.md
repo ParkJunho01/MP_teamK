@@ -36,16 +36,26 @@ Users can enter a location keyword to place a marker on the map and view restaur
 ## 📂 Project Structure
 
 📁 fragment/
+
 ├── HomeFragment.java
+
 ├── RestaurantBottomSheet.java
+
 📁 model/
+
 ├── RestaurantModel.java
+
 📁 res/layout/
+
 ├── fragment_home.xml
+
 ├── bottom_sheet_restaurant.xml
 
+
 yaml
+
 복사
+
 편집
 
 ---
