@@ -1,3 +1,5 @@
+// 지울 예정인 파일
+
 package com.example.tageatproject;
 
 import android.os.Bundle;

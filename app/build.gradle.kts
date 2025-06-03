@@ -17,10 +17,14 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     buildTypes {
         debug {
-            buildConfigField("String", "NAVER_CLIENT_ID", "86zf15o9kd")
-            buildConfigField ("String", "NAVER_CLIENT_SECRET", "3m4eVIbSZ6j9Mks2FOheh9xrnDNJR5JF70MDXxTV")
+            buildConfigField("String", "NAVER_CLIENT_ID", "\"86zf15o9kd\"")
+            buildConfigField ("String", "NAVER_CLIENT_SECRET", "\"3m4eVIbSZ6j9Mks2FOheh9xrnDNJR5JF70MDXxTV\"")
         }
         release {
             buildConfigField("String", "NAVER_CLIENT_ID", "86zf15o9kd")
@@ -48,6 +52,13 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
+
+    implementation ("com.naver.maps:map-sdk:3.21.0") // naver map 의존성 추가
+    implementation("com.google.android.gms:play-services-location:21.0.1") // 위치추적 의존성 추가
+
+    implementation("com.google.android.material:material:1.11.0") // BottomNavigationView 라이브러리 추가
+
 
 
     implementation(libs.appcompat)

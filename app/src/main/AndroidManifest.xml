@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -19,12 +23,12 @@
             android:name=".PlaceDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".tag_search"
-            android:exported="false"/>
-        <activity
             android:name=".fragment_tag"
             android:exported="false" />
-        <activity
+<!--        <activity
+            android:name=".tag_search"
+            android:exported="false"/>-->
+        <!--<activity
             android:name=".fragment_setting"
             android:exported="false" />
         <activity
@@ -35,7 +39,7 @@
             android:exported="false" />
         <activity
             android:name=".fragment_bookmark"
-            android:exported="false" />
+            android:exported="false" />-->
         <activity
             android:name=".MainActivity"
             android:exported="true" >
@@ -45,8 +49,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="se16w82n75" />
     </application>
-
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
 </manifest>

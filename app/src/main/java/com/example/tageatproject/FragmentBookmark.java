@@ -2,12 +2,14 @@ package com.example.tageatproject;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,7 +22,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
-public class fragment_bookmark extends AppCompatActivity {
+public class FragmentBookmark extends Fragment {
+
+    public FragmentBookmark() {
+        // 기본 생성자
+
+    }
 
     private RecyclerView bookmarkRecyclerView;
     private PlaceAdapter adapter;
@@ -29,26 +36,27 @@ public class fragment_bookmark extends AppCompatActivity {
     private String userId;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_fragment_bookmark);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_fragment_bookmark), (v, insets) -> {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_bookmark, container, false);
+
+        ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.activity_fragment_bookmark), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        bookmarkRecyclerView = findViewById(R.id.bookmark_list);
+        bookmarkRecyclerView = view.findViewById(R.id.bookmark_list);
         bookmarkList = new ArrayList<>();
         adapter = new PlaceAdapter(bookmarkList);
-        bookmarkRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        bookmarkRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         bookmarkRecyclerView.setAdapter(adapter);
 
         db = FirebaseFirestore.getInstance();
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         loadBookmarks();
+
+        return view;
     }
 
     private void loadBookmarks() {

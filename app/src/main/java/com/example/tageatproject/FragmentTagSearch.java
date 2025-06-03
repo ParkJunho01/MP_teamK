@@ -2,15 +2,16 @@ package com.example.tageatproject;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,7 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
-public class tag_search extends AppCompatActivity {
+public class FragmentTagSearch extends Fragment {
 
     private EditText searchInput;
     private Button searchButton;
@@ -32,50 +33,54 @@ public class tag_search extends AppCompatActivity {
 
     private FirebaseFirestore db;
 
+    public FragmentTagSearch() {
+        // 기본 생성자
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_tag_search, container, false);
 
-        setContentView(R.layout.activity_tag_search);
-
-        View rootView = findViewById(R.id.activity_tag_search);
-        ViewCompat.setOnApplyWindowInsetsListener(rootView, (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.activity_tag_search), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        searchInput = findViewById(R.id.search_input);
-        searchButton = findViewById(R.id.search_button);
-        placeListView = findViewById(R.id.recent_search_list);
+        searchInput = view.findViewById(R.id.search_input);
+        searchButton = view.findViewById(R.id.search_button);
+        placeListView = view.findViewById(R.id.recent_search_list);
 
         db = FirebaseFirestore.getInstance();
         placeList = new ArrayList<>();
         placeAdapter = new PlaceAdapter(placeList);
 
-        placeListView.setLayoutManager(new LinearLayoutManager(this));
+        placeListView.setLayoutManager(new LinearLayoutManager(getContext()));
         placeListView.setAdapter(placeAdapter);
 
         searchButton.setOnClickListener(v -> {
             String keyword = searchInput.getText().toString().trim();
-
             if (!keyword.isEmpty()) {
                 fetchPlacesByTag(keyword);
             }
         });
+
+        return view;
     }
 
     private void fetchPlacesByTag(String tag) {
+        Log.d("tag_search", "태그 검색 시작: " + tag);
         placeList.clear();
 
         db.collection("places")
                 .whereArrayContains("tags", tag)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
-                    for (DocumentSnapshot doc : querySnapshot) {
+                    Log.d("tag_search", "검색 결과 개수: " + querySnapshot.size());
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
                         Place place = doc.toObject(Place.class);
                         placeList.add(place);
+                        Log.d("tag_search", "가져온 장소: " + place.getName());
                     }
                     placeAdapter.notifyDataSetChanged();
                 })

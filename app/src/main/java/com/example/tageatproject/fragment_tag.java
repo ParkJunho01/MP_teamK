@@ -14,7 +14,7 @@ public class fragment_tag extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_fragment_tag);
+        setContentView(R.layout.fragment_tag);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (    v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);

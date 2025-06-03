@@ -18,7 +18,10 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHolder> {
     private List<Place> placeList;
@@ -26,7 +29,6 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
     public PlaceAdapter(List<Place> placeList) {
         this.placeList = placeList;
     }
-
     public static class PlaceViewHolder extends RecyclerView.ViewHolder {
         TextView name, address, category;
         ImageView image, favoriteIcon;

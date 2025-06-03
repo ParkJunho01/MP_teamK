@@ -1,16 +1,20 @@
 package com.example.tageatproject;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class TagRecommendationActivity extends AppCompatActivity {
+public class FragmentRecommend extends Fragment {
 
     private Button btnFrequentTags, btnUncommonTags;
     private RecyclerView recommendationList;
@@ -36,32 +40,38 @@ public class TagRecommendationActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private String userId;
 
+    public FragmentRecommend() {
+        // Required empty public constructor
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tag_recommend);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_recommend, container, false);
 
         db = FirebaseFirestore.getInstance();
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        btnFrequentTags = findViewById(R.id.btn_frequent_tags);
-        btnUncommonTags = findViewById(R.id.btn_uncommon_tags);
-        recommendationList = findViewById(R.id.recommendation_list);
+        btnFrequentTags = view.findViewById(R.id.btn_frequent_tags);
+        btnUncommonTags = view.findViewById(R.id.btn_uncommon_tags);
+        recommendationList = view.findViewById(R.id.recommendation_list);
 
         placeList = new ArrayList<>();
         placeAdapter = new PlaceAdapter(placeList);
-        recommendationList.setLayoutManager(new LinearLayoutManager(this));
+        recommendationList.setLayoutManager(new LinearLayoutManager(getContext()));
         recommendationList.setAdapter(placeAdapter);
 
-        // 위치 권한 요청 (앱 실행 시 한 번만)
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        // 위치 권한 요청
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
+            ActivityCompat.requestPermissions(requireActivity(),
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1000);
         }
 
         btnFrequentTags.setOnClickListener(v -> fetchRecommendations(true));
         btnUncommonTags.setOnClickListener(v -> fetchRecommendations(false));
+
+        return view;
     }
 
     private void fetchRecommendations(boolean frequent) {
@@ -73,7 +83,7 @@ public class TagRecommendationActivity extends AppCompatActivity {
                 .addOnSuccessListener(documentSnapshot -> {
                     Map<String, Long> tagHistory = (Map<String, Long>) documentSnapshot.get("tagHistory");
                     if (tagHistory == null || tagHistory.isEmpty()) {
-                        Toast.makeText(this, "추천할 태그 기록이 없습니다", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "추천할 태그 기록이 없습니다", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
@@ -97,8 +107,8 @@ public class TagRecommendationActivity extends AppCompatActivity {
     }
 
     private Location getCurrentLocation() {
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        LocationManager locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             return null;
         }
@@ -108,7 +118,7 @@ public class TagRecommendationActivity extends AppCompatActivity {
     private void queryPlacesByTags(List<String> tags) {
         Location currentLocation = getCurrentLocation();
         if (currentLocation == null) {
-            Toast.makeText(this, "현재 위치를 가져올 수 없습니다", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "현재 위치를 가져올 수 없습니다", Toast.LENGTH_SHORT).show();
             return;
         }
 
