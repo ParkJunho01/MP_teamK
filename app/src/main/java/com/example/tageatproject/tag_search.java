@@ -37,7 +37,7 @@ public class tag_search extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
-        setContentView(R.layout.activity_fragment_search);
+        setContentView(R.layout.activity_tag_search);
 
         View rootView = findViewById(R.id.activity_tag_search);
         ViewCompat.setOnApplyWindowInsetsListener(rootView, (v, insets) -> {
