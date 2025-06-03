@@ -42,7 +42,7 @@ public class FragmentHome extends Fragment implements OnMapReadyCallback {
 
         // 네이버 맵 SDK 초기화
         NaverMapSdk.getInstance(requireContext()).setClient(
-                new NaverMapSdk.NcpKeyClient("YOUR_CLIENT_ID") // TODO: 본인의 Client ID로 교체
+                new NaverMapSdk.NcpKeyClient("se16w82n75") // TODO: 본인의 Client ID로 교체
         );
 
         // 위치 소스 초기화
