@@ -18,7 +18,14 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "NAVER_CLIENT_ID", "86zf15o9kd")
+            buildConfigField ("String", "NAVER_CLIENT_SECRET", "3m4eVIbSZ6j9Mks2FOheh9xrnDNJR5JF70MDXxTV")
+        }
         release {
+            buildConfigField("String", "NAVER_CLIENT_ID", "86zf15o9kd")
+            buildConfigField ("String", "NAVER_CLIENT_SECRET", "3m4eVIbSZ6j9Mks2FOheh9xrnDNJR5JF70MDXxTV")
+
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),

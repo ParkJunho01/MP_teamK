@@ -36,9 +36,11 @@ public class tag_search extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_fragment_search);  // 여기엔 RecyclerView도 있어야 함
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_tag_search), (v, insets) -> {
+        setContentView(R.layout.activity_fragment_search);
+
+        View rootView = findViewById(R.id.activity_tag_search);
+        ViewCompat.setOnApplyWindowInsetsListener(rootView, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;

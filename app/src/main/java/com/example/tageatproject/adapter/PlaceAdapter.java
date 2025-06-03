@@ -55,19 +55,35 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
         holder.name.setText(place.getName());
         holder.address.setText(place.getAddress());
         holder.category.setText(place.getCategory());
+
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String placeId = place.getName() + "_" + place.getAddress();
+
+        // ✅ 초기 상태: 즐겨찾기 여부 표시
+        db.collection("users")
+                .document(userId)
+                .collection("favorites")
+                .document(placeId)
+                .get()
+                .addOnSuccessListener(doc -> {
+                    if (doc.exists()) {
+                        holder.favoriteIcon.setImageResource(R.drawable.ic_star);
+                    } else {
+                        holder.favoriteIcon.setImageResource(R.drawable.ic_star_border);
+                    }
+                });
+
+        // ✅ 클릭 이벤트: 즐겨찾기 추가/삭제
         holder.favoriteIcon.setOnClickListener(v -> {
-            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-            String placeId = place.getName() + "_" + place.getAddress();
-
             db.collection("users")
                     .document(userId)
                     .collection("favorites")
                     .document(placeId)
                     .get()
-                    .addOnSuccessListener(documentSnapshot -> {
-                        if (documentSnapshot.exists()) {
+                    .addOnSuccessListener(doc -> {
+                        if (doc.exists()) {
+                            // 삭제
                             db.collection("users")
                                     .document(userId)
                                     .collection("favorites")
@@ -78,6 +94,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
                                         Log.d("Favorite", "즐겨찾기 해제됨");
                                     });
                         } else {
+                            // 추가
                             db.collection("users")
                                     .document(userId)
                                     .collection("favorites")
@@ -94,17 +111,19 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
                     });
         });
 
+        // 이미지 로딩
+        Glide.with(holder.itemView.getContext())
+                .load(place.getImageUrl())
+                .into(holder.image);
+
+        // 상세 페이지 이동
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), PlaceDetailActivity.class);
             intent.putExtra("place", place);
             v.getContext().startActivity(intent);
         });
-
-
-        Glide.with(holder.itemView.getContext())
-                .load(place.getImageUrl())
-                .into(holder.image);
     }
+
 
     @Override
     public int getItemCount() {

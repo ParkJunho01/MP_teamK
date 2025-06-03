@@ -35,12 +35,11 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
         Log.d("Firebase", "Firebase Analytics Initialized");
 
-    }
-
-    FirebaseAuth auth = FirebaseAuth.getInstance();
-    if (auth.getCurrentUser() == null) {
-        auth.signInAnonymously()
-                .addOnSuccessListener(result -> Log.d("Auth", "익명 로그인 성공"))
-                .addOnFailureListener(e -> Log.e("Auth", "익명 로그인 실패", e));
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() == null) {
+            auth.signInAnonymously()
+                    .addOnSuccessListener(result -> Log.d("Auth", "익명 로그인 성공"))
+                    .addOnFailureListener(e -> Log.e("Auth", "익명 로그인 실패", e));
+        }
     }
 }

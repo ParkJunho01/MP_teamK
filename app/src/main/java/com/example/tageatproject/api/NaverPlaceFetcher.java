@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
 public class NaverPlaceFetcher {
 
     private static final String TAG = "NaverPlaceFetcher";
@@ -32,17 +33,28 @@ public class NaverPlaceFetcher {
                 if (category.contains("카페")) tags.add("카페");
                 if (category.contains("디저트")) tags.add("디저트");
 
+                // 주소 → 위도/경도 변환 후 이미지 검색 및 Firestore 업로드
+                GeoCoder.fetchCoordinates(address, new GeoCoder.GeoCallback() {
+                    @Override
+                    public void onResult(double lat, double lng) {
+                        ImageFetcher.fetchImage(title, imageUrl -> {
+                            FirestoreUploader uploader = new FirestoreUploader();
+                            uploader.uploadPlace(title, address, category, tags, imageUrl, link, lat, lng);
+                        });
+                    }
 
-                ImageFetcher.fetchImage(title, imageUrl -> {
-                    FirestoreUploader uploader = new FirestoreUploader();
-                    uploader.uploadPlace(title, address, category, tags, imageUrl, link);
+                    @Override
+                    public void onFailure() {
+                        Log.e(TAG, "주소 → 좌표 변환 실패");
+                    }
                 });
 
             } else {
-                Log.w(TAG, "No items found in API result");
+                Log.w(TAG, "API 응답에 장소 없음");
             }
+
         } catch (Exception e) {
-            Log.e(TAG, "Error parsing result JSON", e);
+            Log.e(TAG, "결과 JSON 파싱 오류", e);
         }
     }
 }

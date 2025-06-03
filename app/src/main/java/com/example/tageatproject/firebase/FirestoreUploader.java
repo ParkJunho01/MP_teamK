@@ -20,7 +20,9 @@ public class FirestoreUploader {
             @NonNull String category,
             @NonNull List<String> tags,
             @NonNull String imageUrl,
-            @NonNull String link
+            @NonNull String link,
+            double latitude,
+            double longitude
     ) {
         Map<String, Object> place = new HashMap<>();
         place.put("name", name);
@@ -29,6 +31,8 @@ public class FirestoreUploader {
         place.put("tags", tags);
         place.put("imageUrl", imageUrl);
         place.put("link", link);
+        place.put("latitude", latitude);
+        place.put("longitude", longitude);
 
         db.collection(COLLECTION_NAME)
                 .add(place)
@@ -39,4 +43,5 @@ public class FirestoreUploader {
                     Log.e(TAG, "Error adding document", e);
                 });
     }
+
 }
