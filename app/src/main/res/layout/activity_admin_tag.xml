@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/admin_tag_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- 태그 입력 -->
+    <EditText
+        android:id="@+id/tag_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="추가할 태그 입력" />
+
+    <!-- 추가 버튼 -->
+    <Button
+        android:id="@+id/btn_add_tag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="태그 추가"
+        android:layout_marginTop="8dp" />
+
+    <!-- 태그 목록 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/tag_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>
